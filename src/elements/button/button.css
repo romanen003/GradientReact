@@ -1,0 +1,14 @@
+.button {
+    background: aqua;
+    box-sizing: border-box;
+    cursor: pointer;
+    font-size: 15px;
+    padding: 10px 40px;
+    outline: 0;
+}
+.button:disabled {
+    background: grey;
+}
+.button:hover {
+    background: #61dafb;
+}

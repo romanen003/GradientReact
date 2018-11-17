@@ -1,0 +1,21 @@
+.Input-component {
+    display: inline-block;
+    position: relative;
+}
+
+.Input-component__input {
+    border: 1px solid grey;
+    box-sizing: border-box;
+    padding: 10px 5px;
+    width: 200px;
+}
+.Input-component__tooltip {
+    border: 1px solid red;
+    box-sizing: border-box;
+    display: inline-block;
+    padding: 10px 5px;
+    position: absolute;
+    left: 0;
+    top: 120%;
+    width: 200px;
+}
