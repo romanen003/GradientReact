@@ -1,45 +1,44 @@
 import React, { Component } from 'react';
+import {bool, string, func} from 'prop-types';
 import './input.css';
-import {isValid} from '../../services/valid-hex';
 
-export class Input extends Component {
-    state = {
-        isValid: false
+export class InputView extends Component {
+    static propTypes ={
+        placeholder: string,
+        type: string,
+        onChange: func,
+        errorMessage: string,
+        showError: bool,
+        withRef: func,
+        value: string
     };
 
-    onChange =(event) => {
-         const isTrue = isValid(event.target.value);
-
-         this.setState({
-             isValid: isTrue
-         });
-        this.props.isCorrect(event, isTrue);
-    };
 
     render () {
         const {
             placeholder,
-            id,
-            isCorrect
+            onChange,
+            type,
+            errorMessage,
+            showError,
+            withRef,
+            value
         } = this.props;
-        const showError = !this.state.isValid;
 
         return (
             <div className='Input-component'>
                 <input
                     className='Input-component__input'
-                    type="text"
-                    data-key={id}
-                    onChange={this.onChange}
+                    type={type}
+                    onChange={onChange}
                     placeholder={placeholder}
-                    isCorrect={isCorrect}
+                    ref={withRef}
+                    value={value}
                 />
-                {showError ?
+                {showError &&
                     <div className='Input-component__tooltip'>
-                        Enter true color
+                        {errorMessage}
                     </div>
-                :
-                    null
                 }
             </div>
         );

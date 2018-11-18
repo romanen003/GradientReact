@@ -1,35 +1,85 @@
 import React, { Component } from 'react';
+import {string, number} from 'prop-types';
 import {Gradient} from "./gradient";
+import {isValid} from "../../services/valid-hex";
 
 
 export class GradientContainer extends Component {
-    state = {
-        isTrue: {
-            1: false,
-            2: false
-        },
-        value: {
-            1: '',
-            2: ''
-        },
-        gradient : ''
+    static propTypes ={
+        errorMessage: string,
+        maxLength: number,
+        buttonLabel: string
     };
 
-    onIsCorrect = (event,value) => {
-        const newDatas = {...this.state};
-        const position = event.target.getAttribute('data-key');
+    static defaultProps = {
+        errorMessage: 'Enter true color, without #',
+        maxLength: 6,
+        buttonLabel: 'Change color'
+    };
 
-        newDatas.isTrue[position] = value;
-        newDatas.value[position] = event.target.value;
+    state = {
+        error: {
+            first: false,
+            second: false
+        },
+        value: {
+            first: '',
+            second: ''
+        },
+        disabled : {
+            first: true,
+            second: true
+        },
+        gradient : {}
+    };
+
+    inputs = {
+        first: null,
+        second: null
+    };
+
+    handleFirstRef = (ref) => this.inputs.first = ref;
+
+    handleSecondRef = (ref) => this.inputs.second = ref;
+
+    handleChangeInput = (valueInput, ref) => {
+        const {error, value, disabled} = this.state;
+        let activeInput = ref === this.inputs.first ? 'first' : 'second';
+
+
+        if (isValid(valueInput)){
+            this.setState({
+                error: {
+                    ...error,
+                    [activeInput]: false
+                },
+                value: {
+                    ...value,
+                    [activeInput]:valueInput
+                },
+                disabled: {
+                    ...disabled,
+                    [activeInput]: false
+                }
+            });
+            return;
+        }
         this.setState({
-            isTrue: newDatas.isTrue,
-            value: newDatas.value
+            error: {
+                ...error,
+                [activeInput]: true
+            },
+            disabled: {
+                ...disabled,
+                [activeInput]: true
+            }
         });
     };
 
+
     handleColorButton = () => {
         const styleGradient = {
-            background: `linear-gradient(45deg,${this.state.value[1]},${this.state.value[2]})`
+            background: `linear-gradient(45deg,#${this.state.value.first},#${this.state.value.second})`
         };
 
         this.setState({
@@ -38,15 +88,22 @@ export class GradientContainer extends Component {
     };
 
     render () {
-        const {isTrue, gradient} = this.state;
-        const isDisabled = isTrue[1] & isTrue[2];
+        const {error, gradient, disabled} = this.state;
+        const isDisabled = disabled.first || disabled.second ;
 
         return (
             <Gradient
                 gradient={gradient}
-                disabledButton={!isDisabled}
+                disabledButton={isDisabled}
                 handleColorButton={this.handleColorButton}
-                isCorrect={this.onIsCorrect}
+                maxLength={this.props.maxLength}
+                firstRef={this.handleFirstRef}
+                secondRef={this.handleSecondRef}
+                onChange={this.handleChangeInput}
+                showFirstError={error.first}
+                showSecondError={error.second}
+                errorMessage={this.props.errorMessage}
+                buttonLabel={this.props.buttonLabel}
             />
         );
     };

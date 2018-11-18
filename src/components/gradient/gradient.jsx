@@ -1,17 +1,38 @@
 import React, { Component } from 'react';
+import {bool, string, func, number, objectOf} from 'prop-types';
 import {Button,Input} from "../../elements";
 import './gradient.css';
 
 
 export class Gradient extends Component {
+    static propTypes ={
+        disabledButton : bool,
+        handleColorButton: func,
+        onChange: func,
+        maxLength: number,
+        gradient: objectOf(string),
+        firstRef: func,
+        secondRef: func,
+        showFirstError: bool,
+        showSecondError: bool,
+        errorMessage: string,
+        buttonLabel: string
+    };
+
 
     render () {
         const {
             disabledButton,
             handleColorButton,
             onChange,
-            isCorrect,
-            gradient
+            maxLength,
+            gradient,
+            firstRef,
+            secondRef,
+            showFirstError,
+            showSecondError,
+            errorMessage,
+            buttonLabel
         } = this.props;
         const isTrueStyle = Object.keys(gradient).length === 0 ? null : gradient ;
 
@@ -22,20 +43,25 @@ export class Gradient extends Component {
             >
                 <div className='Gradient__content'>
                     <Input
-                        id = {1}
                         onChange={onChange}
                         placeholder='Enter first color'
-                        isCorrect={isCorrect}
+                        maxLength={maxLength}
+                        withRef={firstRef}
+                        showError={showFirstError}
+                        errorMessage={errorMessage}
                     />
                     <Button
                         disabled={disabledButton}
                         onClick={handleColorButton}
+                        label={buttonLabel}
                     />
                     <Input
-                        id = {2}
                         onChange={onChange}
                         placeholder='Enter second color'
-                        isCorrect={isCorrect}
+                        maxLength={maxLength}
+                        withRef={secondRef}
+                        showError={showSecondError}
+                        errorMessage={errorMessage}
                     />
                 </div>
             </div>

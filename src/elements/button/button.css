@@ -6,9 +6,12 @@
     padding: 10px 40px;
     outline: 0;
 }
-.button:disabled {
-    background: grey;
-}
 .button:hover {
     background: #61dafb;
+}
+.button:focus {
+    box-shadow:  0 0 0 5px green ;
+}
+.button:disabled {
+    background: grey;
 }

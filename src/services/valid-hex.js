@@ -1,5 +1,6 @@
  export function isValid (color) {
-     const re = /(?:#)[0-9a-f]{8}|(?:#)[0-9a-f]{6}|(?:#)[0-9a-f]{4}|(?:#)[0-9a-f]{3}/ig;
+     const re = /^[a-f0-9]{3,6}$/i;
 
-     return re.test(color);
+     return color.length === 3 || color.length === 6  ? re.test(color) : false ;
+
 }
